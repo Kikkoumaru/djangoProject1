@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬投与削除</title>
+</head>
+<body>
+<h2>薬投与削除</h2>
+<form action="/delete_medication_instruction" method="POST">
+    <p>Confirm Medication to Delete:</p>
+    <input type="checkbox" id="medication1" name="medication1" value="medication1">
+    <label for="medication1">Medication 1</label><br>
+    <input type="checkbox" id="medication2" name="medication2" value="medication2">
+    <label for="medication2">Medication 2</label><br>
+    <input type="checkbox" id="medication3" name="medication3" value="medication3">
+    <label for="medication3">Medication 3</label><br><br>
+    <input type="submit" value="Delete Selected Medication">
+</form>
+</body>
+</html>

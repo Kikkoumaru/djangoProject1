@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者登録</title>
+</head>
+<body>
+<h2>患者登録</h2>
+<form action="/register_patient" method="POST">
+    <label for="patientId">Patient ID:</label><br>
+    <input type="text" id="patientId" name="patientId"><br>
+    <label for="lastName">Last Name:</label><br>
+    <input type="text" id="lastName" name="lastName"><br>
+    <label for="firstName">First Name:</label><br>
+    <input type="text" id="firstName" name="firstName"><br>
+    <label for="insuranceNumber">Insurance Number:</label><br>
+    <input type="text" id="insuranceNumber" name="insuranceNumber"><br>
+    <label for="expirationDate">Expiration Date:</label><br>
+    <input type="date" id="expirationDate" name="expirationDate"><br><br>
+    <input type="submit" value="Register">
+</form>
+</body>
+</html>

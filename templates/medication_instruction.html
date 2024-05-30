@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薬投与指示</title>
+</head>
+<body>
+<h2>薬投与指示</h2>
+<form action="/medication_instruction" method="POST">
+    <label for="medication">Medication:</label><br>
+    <select id="medication" name="medication">
+        <!-- Options will be dynamically populated from database -->
+        <option value="medication1">Medication 1</option>
+        <option value="medication2">Medication 2</option>
+        <option value="medication3">Medication 3</option>
+    </select><br>
+    <label for="quantity">Quantity:</label><br>
+    <input type="number" id="quantity" name="quantity"><br><br>
+    <input type="submit" value="Confirm">
+</form>
+</body>
+</html>
