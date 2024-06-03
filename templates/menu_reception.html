@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受付メニュー</title>
+</head>
+<body>
+    <h2>受付メニュー</h2>
+    <ul>
+        <li><a href="{% url 'patient_register' %}">患者登録</a></li>
+        <li><a href="{% url 'patient_search_by_name' %}">患者検索</a></li>
+        <li><a href="{% url 'patient_check_insurance_expiry' %}">保険証期限確認</a></li>
+        <li><a href="{% url 'employee_change_password' %}">パスワード変更</a></li>
+        <li><a href="{% url 'logout' %}">ログアウト</a></li>
+    </ul>
+</body>
+</html>

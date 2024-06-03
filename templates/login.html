@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ログイン</title>
-</head>
-<body>
-<h2>ログイン</h2>
-<form action="menu.html" method="POST">
-    <label for="userId">ユーザーID:</label>
-    <input type="text" id="userId" name="userId" required><br><br>
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <label for="username">ユーザーID:</label>
+    <input type="text" id="username" name="username" required><br><br>
 
     <label for="password">パスワード:</label>
     <input type="password" id="password" name="password" required><br><br>
 
     <input type="submit" value="ログイン">
 </form>
-</body>
-</html>

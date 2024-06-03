@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医師メニュー</title>
+</head>
+<body>
+    <h2>医師メニュー</h2>
+    <ul>
+        <li><a href="{% url 'patient_search_by_name' %}">患者検索</a></li>
+        <li><a href="{% url 'check_treatment_history' %}">処置履歴確認</a></li> 
+        <li><a href="{% url 'employee_change_password' %}">パスワード変更</a></li>
+        <li><a href="{% url 'logout' %}">ログアウト</a></li>
+    </ul>
+</body>
+</html>
