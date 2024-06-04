@@ -21,10 +21,18 @@ def login_view(request):
                 if user.role == Employee.Role.RECEPTION:
                     return redirect('menu_reception')  # 受付用メニュー
                 elif user.role == Employee.Role.DOCTOR:
-                    return redirect('menu_doctor')    # 医師用メニュー
+                    return redirect('menu_doctor')  # 医師用メニュー
             else:
+                # エラー画面にリダイレクト
                 messages.error(request, 'ユーザーIDまたはパスワードが正しくありません。')
+                return redirect('error')  # エラー画面のURLパターン名に置き換えてください
     else:
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+# views.py
+def error_view(request):
+    error_message = "ユーザーIDまたはパスワードが正しくありません。"
+    return render(request, 'error.html', {'error_message': error_message})
