@@ -188,4 +188,4 @@ def hospital_update(request, hospital_id):
             request.session['form_data'] = form.cleaned_data
             return redirect('hospital_update_confirm', hospital_id=hospital_id)
     else:
-        form = HospitalUpdateForm(instance=hospital
+        form = HospitalUpdateForm(instance=hospital)
