@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保険証情報変更確認</title>
+</head>
+<body>
+    <h2>保険証情報変更確認</h2>
+    <p>以下の内容で変更します。よろしいですか？</p>
+    <table>
+        <tr><th>患者ID</th><td>{{ patient.patient_id }}</td></tr>
+        <tr><th>姓</th><td>{{ patient.last_name }}</td></tr>
+        <tr><th>名</th><td>{{ patient.first_name }}</td></tr>
+        <tr><th>保険証番号</th><td>{{ form_data.insurance_number }}</td></tr>
+        <tr><th>有効期限</th><td>{{ form_data.insurance_exp }}</td></tr>
+    </table>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">変更</button>
+        <button type="submit" name="action" value="back">修正</button>
+    </form>
+</body>
+</html>

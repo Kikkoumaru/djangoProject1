@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>他病院情報変更</title>
+    <title>他病院登録</title>
 </head>
 <body>
-    <h2>他病院情報変更</h2>
+    <h2>他病院登録</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }} 
-        <button type="submit">変更確認</button>
+        {{ form.as_p }}
+        <button type="submit">登録確認</button>
     </form>
 </body>
 </html>

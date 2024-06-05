@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>他病院一覧</title>
+    <title>検索結果</title>
 </head>
 <body>
-    <h2>他病院一覧</h2>
+    <h2>検索結果</h2>
+    {% if hospitals %}
     <table>
         <tr>
             <th>病院ID</th>
@@ -15,8 +16,8 @@
             <th>電話番号</th>
             <th>資本金</th>
             <th>救急対応</th>
-            <th></th> </tr>
-        {% for hospital in page_obj %}
+        </tr>
+        {% for hospital in hospitals %}
         <tr>
             <td>{{ hospital.hospital_id }}</td>
             <td>{{ hospital.hospital_name }}</td>
@@ -24,17 +25,13 @@
             <td>{{ hospital.phone_number }}</td>
             <td>{{ hospital.capital }}</td>
             <td>{{ hospital.emergency }}</td>
-            <td><a href="{% url 'hospital_update' hospital.hospital_id %}">更新</a></td>
         </tr>
         {% endfor %}
     </table>
-    <div>
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">前のページ</a>
-        {% endif %}
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">次のページ</a>
-        {% endif %}
-    </div>
+    {% else %}
+    <p>該当する病院はありません。</p>
+    {% endif %}
+    <a href="javascript:history.back()">戻る</a> 
 </body>
 </html>
+

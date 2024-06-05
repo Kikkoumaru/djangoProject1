@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>処置確定</title>
+    <title>処置確認</title>
 </head>
 <body>
-<h2>処置確定</h2>
-<form action="/confirm_treatment" method="POST">
-    <p>Confirm Treatment</p>
-    <input type="checkbox" id="treatment1" name="treatment1" value="treatment1">
-    <label for="treatment1">Treatment 1</label><br>
-    <input type="checkbox" id="treatment2" name="treatment2" value="treatment2">
-    <label for="treatment2">Treatment 2</label><br>
-    <input type="checkbox" id="treatment3" name="treatment3" value="treatment3">
-    <label for="treatment3">Treatment 3</label><br><br>
-    <input type="submit" value="Confirm Treatment">
-</form>
+    <h2>処置確認</h2>
+    <p>以下の処置内容でよろしいですか？</p>
+
+    {% if treatments %}
+        <table>
+            <tr>
+                <th>薬剤名</th>
+                <th>数量</th>
+            </tr>
+            {% for treatment in treatments %}
+            <tr>
+                <td>{{ treatment.medicine.medicinename }}</td>
+                <td>{{ treatment.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>処置が選択されていません。</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">確定</button>
+        <button type="submit" name="action" value="back">戻る</button>
+    </form>
 </body>
 </html>

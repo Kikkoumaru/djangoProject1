@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保険証期限切れ患者一覧</title>
+</head>
+<body>
+    <h2>保険証期限切れ患者一覧</h2>
+    <table>
+        <tr>
+            <th>患者ID</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>保険証番号</th>
+            <th>有効期限</th>
+        </tr>
+        {% for patient in expired_patients %}
+        <tr>
+            <td>{{ patient.patient_id }}</td>
+            <td>{{ patient.last_name }}</td>
+            <td>{{ patient.first_name }}</td>
+            <td>{{ patient.insurance_number }}</td>
+            <td>{{ patient.insurance_exp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

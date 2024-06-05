@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者登録確認</title>
+</head>
+<body>
+    <h2>患者登録確認</h2>
+    <p>以下の内容で登録します。よろしいですか？</p>
+    <table>
+        <tr><th>患者ID</th><td>{{ form_data.patient_id }}</td></tr>
+        <tr><th>姓</th><td>{{ form_data.last_name }}</td></tr>
+        <tr><th>名</th><td>{{ form_data.first_name }}</td></tr>
+        <tr><th>性別</th><td>{{ form_data.gender }}</td></tr>
+        <tr><th>生年月日</th><td>{{ form_data.birthdate }}</td></tr>
+        <tr><th>保険証番号</th><td>{{ form_data.insurance_number }}</td></tr>
+        <tr><th>有効期限</th><td>{{ form_data.insurance_exp }}</td></tr>
+    </table>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">登録</button>
+        <button type="submit" name="action" value="back">修正</button>
+    </form>
+</body>
+</html>

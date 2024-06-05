@@ -5,10 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75b9560-d7f6-4293-bc03-dbc0488f49ab" name="変更" comment="機能">
-      <change afterPath="$PROJECT_DIR$/templates/employee_update.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/employee_update_confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/change_insurance_info_confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hospital_registration.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hospital_registration_confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hospital_search_result.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/hospital_update_confirm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/patient_check_insurance_expiry.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/patient_registration_confirm.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/abaranti/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/abaranti/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/change_hospital_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/change_hospital_info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/check_treatment_history.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/check_treatment_history.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/confirm_treatment.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/confirm_treatment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/hospitalitiran.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/hospitalitiran.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +141,7 @@
       <workItem from="1717029753307" duration="7934000" />
       <workItem from="1717374324644" duration="9886000" />
       <workItem from="1717468657037" duration="3814000" />
-      <workItem from="1717562176022" duration="2666000" />
+      <workItem from="1717562176022" duration="3579000" />
     </task>
     <task id="LOCAL-00001" summary="機能">
       <option name="closed" value="true" />
@@ -159,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717474686560</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="機能">
+      <option name="closed" value="true" />
+      <created>1717565608005</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717565608005</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,5 +196,16 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="機能" />
     <option name="LAST_COMMIT_MESSAGE" value="機能" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="django-line">
+          <url>file://$PROJECT_DIR$/templates/change_hospital_info.html</url>
+          <line>11</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
