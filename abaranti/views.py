@@ -164,7 +164,7 @@ def hospital_list(request):
     paginator = Paginator(hospitals, 10)  # 1ページあたり10件表示
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'hospital_list.html', {'page_obj': page_obj})
+    return render(request, 'hospitalitiran.html', {'page_obj': page_obj})
 
 @login_required
 def hospital_search_by_capital(request):
