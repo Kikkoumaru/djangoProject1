@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>変更確認</title>
+</head>
+<body>
+    <h2>変更確認</h2>
+    <p>以下の内容で変更します。よろしいですか？</p>
+    <table>
+        <tr><th>従業員ID</th><td>{{ form_data.username }}</td></tr>
+        <tr><th>名</th><td>{{ form_data.first_name }}</td></tr>
+        <tr><th>姓</th><td>{{ form_data.last_name }}</td></tr>
+    </table>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">変更</button>
+        <button type="submit" name="action" value="back">修正</button>
+    </form>
+</body>
+</html>

@@ -1,10 +1,17 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginForm  # forms.pyで定義したLoginForm
-from .models import Employee
+from django.contrib.auth.decorators import login_required
+from .forms import LoginForm, EmployeeRegistrationForm, EmployeeUpdateForm, HospitalRegistrationForm, HospitalUpdateForm, PatientRegistrationForm, PatientInsuranceChangeForm, MedicationInstructionForm
+from .models import Employee, Patient, Hospital, Treatment, Medicine
+from django.db.models import Q
+from datetime import date
+from django.core.paginator import Paginator
+from django.contrib.auth.hashers import make_password
 
-
+# -------------------------------------------------------------------
+# ログイン機能 (L101)
+# -------------------------------------------------------------------
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -12,51 +19,47 @@ def login_view(request):
             user_id = form.cleaned_data['user_id']
             password = form.cleaned_data['password']
 
-            # ユーザー認証
             user = authenticate(request, username=user_id, password=password)
 
             if user is not None:
                 login(request, user)
-                # ロールに応じたリダイレクト
                 if user.role == Employee.Role.RECEPTION:
-                    return redirect('menu_reception')  # 受付用メニュー
+                    return redirect('menu_reception')
                 elif user.role == Employee.Role.DOCTOR:
-                    return redirect('menu_doctor')  # 医師用メニュー
+                    return redirect('menu_doctor')
             else:
-                # エラー画面にリダイレクト
                 messages.error(request, 'ユーザーIDまたはパスワードが正しくありません。')
-                return redirect('error')  # エラー画面のURLパターン名に置き換えてください
     else:
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
 
-
-# views.py
 def error_view(request):
     error_message = "ユーザーIDまたはパスワードが正しくありません。"
     return render(request, 'error.html', {'error_message': error_message})
-# 従業員管理機能
+
+# -------------------------------------------------------------------
+# 従業員管理機能 (E101, E102)
+# -------------------------------------------------------------------
 @login_required
 def employee_register(request):
     if request.method == 'POST':
         form = EmployeeRegistrationForm(request.POST)
         if form.is_valid():
-            # パスワードの一致確認
+            # パスワードの一致確認と従業員IDの重複確認
             if form.cleaned_data['password'] != form.cleaned_data['confirm_password']:
                 messages.error(request, 'パスワードが一致しません。')
+            elif Employee.objects.filter(username=form.cleaned_data['username']).exists():
+                messages.error(request, 'この従業員IDは既に登録されています。')
             else:
-                # 従業員IDの重複確認
-                if Employee.objects.filter(username=form.cleaned_data['username']).exists():
-                    messages.error(request, 'この従業員IDは既に登録されています。')
-                else:
-                    # ハッシュ化されたパスワードで保存
-                    form.cleaned_data['password'] = make_password(form.cleaned_data['password'])
-                    # 登録確認画面にリダイレクト
-                    request.session['form_data'] = form.cleaned_data
-                    return redirect('employee_registration_confirm')
+                # ハッシュ化されたパスワードで保存
+                form.cleaned_data['password'] = make_password(form.cleaned_data['password'])
+                # 登録確認画面にリダイレクト
+                request.session['form_data'] = form.cleaned_data
+                return redirect('employee_registration_confirm')
     else:
         form = EmployeeRegistrationForm()
+
     return render(request, 'employee_registration.html', {'form': form})
 
 @login_required
@@ -65,7 +68,7 @@ def employee_registration_confirm(request):
         if 'confirm' in request.POST:
             # 登録処理
             form_data = request.session.get('form_data')
-            Employee.objects.create_user(**form_data)  # create_user() を使用してユーザーを作成
+            Employee.objects.create_user(**form_data)
             del request.session['form_data']
             messages.success(request, '従業員を登録しました。')
             return redirect('employee_register')  # 登録画面に戻る
@@ -116,11 +119,9 @@ def employee_update_confirm(request):
 
     return render(request, 'employee_update_confirm.html', {'form_data': form_data})
 
-@login_required
-def employee_change_password(request):
-    # ... (詳細設計書 E103 に基づいて実装)
-
-# 他病院管理機能
+# -------------------------------------------------------------------
+# 他病院管理機能 (H101, H102, H104, H105)
+# -------------------------------------------------------------------
 @login_required
 def hospital_register(request):
     if request.method == 'POST':
@@ -155,22 +156,15 @@ def hospital_registration_confirm(request):
         if not form_data:
             # セッションにデータがない場合はエラー
             return redirect('hospital_register')
-
     return render(request, 'hospital_registration_confirm.html', {'form_data': form_data})
 
 @login_required
 def hospital_list(request):
     hospitals = Hospital.objects.all()
-    return render(request, 'hospital_list.html', {'hospitals': hospitals})
-
-@login_required
-def hospital_search_by_address(request):
-    if request.method == 'POST':
-        address = request.POST['address']
-        hospitals = Hospital.objects.filter(hospital_address__contains=address)
-        return render(request, 'hospital_search_result.html', {'hospitals': hospitals})
-    else:
-        return render(request, 'hospital_search_by_address.html')
+    paginator = Paginator(hospitals, 10)  # 1ページあたり10件表示
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'hospital_list.html', {'page_obj': page_obj})
 
 @login_required
 def hospital_search_by_capital(request):
@@ -194,27 +188,4 @@ def hospital_update(request, hospital_id):
             request.session['form_data'] = form.cleaned_data
             return redirect('hospital_update_confirm', hospital_id=hospital_id)
     else:
-        form = HospitalUpdateForm(instance=hospital)
-    return render(request, 'hospital_update.html', {'form': form, 'hospital': hospital})
-
-@login_required
-def hospital_update_confirm(request, hospital_id):
-    hospital = get_object_or_404(Hospital, pk=hospital_id)
-    if request.method == 'POST':
-        if 'confirm' in request.POST:
-            # 変更処理
-            form_data = request.session.get('form_data')
-            hospital.hospital_name = form_data['hospital_name']
-            hospital.hospital_address = form_data['hospital_address']
-            hospital.phone_number = form_data['phone_number']
-            hospital.capital = form_data['capital']
-            hospital.emergency = form_data['emergency']
-            hospital.save()
-            del request.session['form_data']
-            messages.success(request, '病院情報を変更しました。')
-            return redirect('hospital_list')  # 一覧画面に戻る
-        elif 'back' in request.POST:
-            # 変更画面に戻る
-            return redirect('hospital_update', hospital_id=hospital_id)
-    else:
-        form_data
+        form = HospitalUpdateForm(instance=hospital
