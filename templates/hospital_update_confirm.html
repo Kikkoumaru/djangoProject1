@@ -7,19 +7,4 @@
 </head>
 <body>
     <h2>変更確認</h2>
-    <p>以下の内容で変更します。よろしいですか？</p>
-    <table>
-        <tr><th>病院ID</th><td>{{ form_data.hospital_id }}</td></tr>
-        <tr><th>病院名</th><td>{{ form_data.hospital_name }}</td></tr>
-        <tr><th>住所</th><td>{{ form_data.hospital_address }}</td></tr>
-        <tr><th>電話番号</th><td>{{ form_data.phone_number }}</td></tr>
-        <tr><th>資本金</th><td>{{ form_data.capital }}</td></tr>
-        <tr><th>救急対応</th><td>{{ form_data.emergency }}</td></tr>
-    </table>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="action" value="confirm">変更</button>
-        <button type="submit" name="action" value="back">修正</button>
-    </form>
-</body>
-</html>
+    <p>以下の内容

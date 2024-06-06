@@ -1,12 +1,13 @@
 from django import forms
 from .models import Employee, Hospital, Supplier, Patient, Medicine, Treatment
 
-# ログインフォーム
+
 class LoginForm(forms.Form):
     user_id = forms.CharField(label='ユーザーID', max_length=8, required=True)
     password = forms.CharField(label='パスワード', widget=forms.PasswordInput, required=True)
 
-# 従業員登録フォーム
+
+# 従業員登録フォーム (E101)
 class EmployeeRegistrationForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput, label='パスワード（確認用）')
 
@@ -33,12 +34,14 @@ class EmployeeRegistrationForm(forms.ModelForm):
             raise forms.ValidationError("パスワードが一致しません")
         return cleaned_data
 
-# 従業員更新フォーム（従業員登録フォームからパスワードとロールを除いたもの）
+
+# 従業員更新フォーム (E102)
 class EmployeeUpdateForm(EmployeeRegistrationForm):
     class Meta(EmployeeRegistrationForm.Meta):
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name']  # パスワードとロールは変更不可
 
-# 他病院登録フォーム
+
+# 他病院登録フォーム (H101)
 class HospitalRegistrationForm(forms.ModelForm):
     class Meta:
         model = Hospital
@@ -52,13 +55,27 @@ class HospitalRegistrationForm(forms.ModelForm):
             'emergency': '救急対応',
         }
 
-# 他病院更新フォーム（他病院登録フォームから病院IDを除いたもの）
+    def clean_capital(self):
+        capital = self.cleaned_data['capital']
+        try:
+            capital = int(capital)
+            if capital < 0:
+                raise forms.ValidationError('資本金は0以上の数値を入力してください。')
+            return capital
+        except ValueError:
+            raise forms.ValidationError('資本金には数値を入力してください。')
+
+
+# 他病院更新フォーム (H105)
 class HospitalUpdateForm(HospitalRegistrationForm):
     class Meta(HospitalRegistrationForm.Meta):
-        exclude = ['hospital_id']
+        exclude = ['hospital_id']  # 病院IDは変更不可
 
-# 患者登録フォーム
+
+# 患者登録フォーム (P101)
 class PatientRegistrationForm(forms.ModelForm):
+    confirm_insurance_number = forms.CharField(label='保険証記号番号（確認用）', max_length=64, required=True)
+
     class Meta:
         model = Patient
         fields = ['patient_id', 'last_name', 'first_name', 'gender', 'birthdate', 'insurance_number', 'insurance_exp']
@@ -68,21 +85,43 @@ class PatientRegistrationForm(forms.ModelForm):
             'first_name': '名',
             'gender': '性別',
             'birthdate': '生年月日',
-            'insurance_number': '保険証番号',
-            'insurance_exp': '保険証有効期限',
+            'insurance_number': '保険証記号番号',
+            'insurance_exp': '有効期限',
         }
 
-# 患者保険証変更フォーム
+    def clean(self):
+        cleaned_data = super().clean()
+        insurance_number = cleaned_data.get("insurance_number")
+        confirm_insurance_number = cleaned_data.get("confirm_insurance_number")
+
+        if insurance_number and confirm_insurance_number and insurance_number != confirm_insurance_number:
+            raise forms.ValidationError("保険証記号番号が一致しません")
+        return cleaned_data
+
+
+# 患者保険証変更フォーム (P102)
 class PatientInsuranceChangeForm(forms.ModelForm):
+    confirm_insurance_number = forms.CharField(label='保険証記号番号（確認用）', max_length=64, required=True)
+
     class Meta:
         model = Patient
         fields = ['insurance_number', 'insurance_exp']
         labels = {
-            'insurance_number': '保険証番号',
-            'insurance_exp': '保険証有効期限',
+            'insurance_number': '保険証記号番号',
+            'insurance_exp': '有効期限',
         }
 
-# 薬剤投与指示フォーム
+    def clean(self):
+        cleaned_data = super().clean()
+        insurance_number = cleaned_data.get("insurance_number")
+        confirm_insurance_number = cleaned_data.get("confirm_insurance_number")
+
+        if insurance_number and confirm_insurance_number and insurance_number != confirm_insurance_number:
+            raise forms.ValidationError("保険証記号番号が一致しません")
+        return cleaned_data
+
+
+# 薬剤投与指示フォーム (D101)
 class MedicationInstructionForm(forms.ModelForm):
     class Meta:
         model = Treatment
@@ -91,3 +130,8 @@ class MedicationInstructionForm(forms.ModelForm):
             'medicine': '薬剤',
             'quantity': '数量',
         }
+
+    def __init__(self, *args, medicines=None, **kwargs):  # medicines を引数に追加
+        super().__init__(*args, **kwargs)
+        if medicines:
+            self.fields['medicine'].queryset = medicines  # ビュー関数から渡された medicines を使用する

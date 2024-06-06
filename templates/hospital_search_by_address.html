@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住所検索</title>
+</head>
+<body>
+    <h2>住所検索</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="address">住所:</label>
+        <input type="text" id="address" name="address" required><br><br>
+        <button type="submit">検索</button>
+    </form>
+</body>
+</html>

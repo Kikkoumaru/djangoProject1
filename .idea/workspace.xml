@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f75b9560-d7f6-4293-bc03-dbc0488f49ab" name="変更" comment="機能">
+      <change afterPath="$PROJECT_DIR$/templates/hospital_search_by_address.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/patient_search_by_name.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/patient_search_result.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/abaranti/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/abaranti/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/abaranti/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/abaranti/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/abaranti/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/abaranti/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/employee_update_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/employee_update_confirm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/hospital_update_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/hospital_update_confirm.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +137,8 @@
       <workItem from="1717029753307" duration="7934000" />
       <workItem from="1717374324644" duration="9886000" />
       <workItem from="1717468657037" duration="3814000" />
-      <workItem from="1717562176022" duration="4255000" />
+      <workItem from="1717562176022" duration="4440000" />
+      <workItem from="1717632988905" duration="7243000" />
     </task>
     <task id="LOCAL-00001" summary="機能">
       <option name="closed" value="true" />
@@ -175,7 +180,23 @@
       <option name="project" value="LOCAL" />
       <updated>1717566511232</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="機能">
+      <option name="closed" value="true" />
+      <created>1717567227215</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1717567227215</updated>
+    </task>
+    <task id="LOCAL-00007" summary="機能">
+      <option name="closed" value="true" />
+      <created>1717567345773</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1717567345773</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,16 +217,5 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="機能" />
     <option name="LAST_COMMIT_MESSAGE" value="機能" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="django-line">
-          <url>file://$PROJECT_DIR$/templates/change_hospital_info.html</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

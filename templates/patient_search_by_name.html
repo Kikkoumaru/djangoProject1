@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者名検索</title>
+</head>
+<body>
+    <h2>患者名検索</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="patientName">患者名:</label>
+        <input type="text" id="patientName" name="patientName" required><br><br>
+        <button type="submit">検索</button>
+    </form>
+</body>
+</html>

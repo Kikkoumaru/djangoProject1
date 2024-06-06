@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, EmployeeRegistrationForm, EmployeeUpdateForm, HospitalRegistrationForm, HospitalUpdateForm, PatientRegistrationForm, PatientInsuranceChangeForm, MedicationInstructionForm
+from .forms import LoginForm, EmployeeRegistrationForm, EmployeeUpdateForm, HospitalRegistrationForm, \
+    HospitalUpdateForm, PatientRegistrationForm, PatientInsuranceChangeForm, MedicationInstructionForm
 from .models import Employee, Patient, Hospital, Treatment, Medicine
 from django.db.models import Q
 from datetime import date
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import make_password
+
 
 # -------------------------------------------------------------------
 # ログイン機能 (L101)
@@ -34,9 +36,22 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
+
 def error_view(request):
     error_message = "ユーザーIDまたはパスワードが正しくありません。"
     return render(request, 'error.html', {'error_message': error_message})
+
+
+# メニュー画面
+@login_required
+def menu(request):
+    if request.user.role == Employee.Role.RECEPTION:
+        return redirect('menu_reception')  # 受付用メニュー
+    elif request.user.role == Employee.Role.DOCTOR:
+        return redirect('menu_doctor')  # 医師用メニュー
+    else:
+        return redirect('error')  # エラー画面のURLパターン名に置き換えてください
+
 
 # -------------------------------------------------------------------
 # 従業員管理機能 (E101, E102)
@@ -62,6 +77,7 @@ def employee_register(request):
 
     return render(request, 'employee_registration.html', {'form': form})
 
+
 @login_required
 def employee_registration_confirm(request):
     if request.method == 'POST':
@@ -83,6 +99,7 @@ def employee_registration_confirm(request):
 
     return render(request, 'employee_registration_confirm.html', {'form_data': form_data})
 
+
 @login_required
 def employee_update(request):
     if request.method == 'POST':
@@ -94,6 +111,7 @@ def employee_update(request):
     else:
         form = EmployeeUpdateForm(instance=request.user)
     return render(request, 'employee_update.html', {'form': form})
+
 
 @login_required
 def employee_update_confirm(request):
@@ -119,6 +137,7 @@ def employee_update_confirm(request):
 
     return render(request, 'employee_update_confirm.html', {'form_data': form_data})
 
+
 # -------------------------------------------------------------------
 # 他病院管理機能 (H101, H102, H104, H105)
 # -------------------------------------------------------------------
@@ -137,6 +156,7 @@ def hospital_register(request):
     else:
         form = HospitalRegistrationForm()
     return render(request, 'hospital_registration.html', {'form': form})
+
 
 @login_required
 def hospital_registration_confirm(request):
@@ -158,6 +178,7 @@ def hospital_registration_confirm(request):
             return redirect('hospital_register')
     return render(request, 'hospital_registration_confirm.html', {'form_data': form_data})
 
+
 @login_required
 def hospital_list(request):
     hospitals = Hospital.objects.all()
@@ -165,6 +186,7 @@ def hospital_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'hospitalitiran.html', {'page_obj': page_obj})
+
 
 @login_required
 def hospital_search_by_capital(request):
@@ -176,7 +198,8 @@ def hospital_search_by_capital(request):
             return render(request, 'hospital_search_result.html', {'hospitals': hospitals})
         except ValueError:
             messages.error(request, '資本金には数値を入力してください。')
-    return render(request, 'hospital_search_by_capital.html')
+    return render(request, 'capital_confirmation.html')
+
 
 @login_required
 def hospital_update(request, hospital_id):
@@ -187,5 +210,58 @@ def hospital_update(request, hospital_id):
             # 変更確認画面にリダイレクト
             request.session['form_data'] = form.cleaned_data
             return redirect('hospital_update_confirm', hospital_id=hospital_id)
+
+
+@login_required
+def hospital_update_confirm(request, hospital_id):
+    hospital = get_object_or_404(Hospital, pk=hospital_id)
+    if request.method == 'POST':
+        if 'confirm' in request.POST:
+            # 変更処理
+            form_data = request.session.get('form_data')
+            hospital.hospital_name = form_data['hospital_name']
+            hospital.hospital_address = form_data['hospital_address']
+            hospital.phone_number = form_data['phone_number']
+            hospital.capital = form_data['capital']
+            hospital.emergency = form_data['emergency']
+            hospital.save()  # 変更を保存
+            del request.session['form_data']  # セッションデータの削除
+            messages.success(request, '病院情報を変更しました。')
+            return redirect('hospital_list')  # 一覧画面に戻る
+        elif 'back' in request.POST:
+            # 変更画面に戻る
+            return redirect('hospital_update', hospital_id=hospital_id)
     else:
-        form = HospitalUpdateForm(instance=hospital)
+        form_data = request.session.get('form_data')
+        if not form_data:
+            # セッションにデータがない場合はエラー
+            return redirect('hospital_update', hospital_id=hospital_id)
+
+    return render(request, 'hospital_update_confirm.html', {'form_data': form_data, 'hospital': hospital})  # 変更前の情報を渡す
+
+
+# P103 患者名検索機能
+@login_required
+def patient_search_by_name(request):
+    if request.method == 'POST':
+        patient_name = request.POST['patientName']
+        # 空白で分割して、部分一致検索
+        names = patient_name.split()
+        query = Q()
+        for name in names:
+            query |= Q(first_name__icontains=name) | Q(last_name__icontains=name)
+        patients = Patient.objects.filter(query)
+        return render(request, 'patient_search_result.html', {'patients': patients})  # 修正
+    else:
+        return render(request, 'patient_search_by_name.html')
+
+
+# H103 住所→他病院検索機能
+@login_required
+def hospital_search_by_address(request):
+    if request.method == 'POST':
+        address = request.POST['address']
+        hospitals = Hospital.objects.filter(hospital_address__icontains=address)
+        return render(request, 'hospital_search_result.html', {'hospitals': hospitals})
+    else:
+        return render(request, 'hospital_search_by_address.html')
