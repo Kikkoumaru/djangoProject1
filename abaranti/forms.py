@@ -135,3 +135,9 @@ class MedicationInstructionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if medicines:
             self.fields['medicine'].queryset = medicines  # ビュー関数から渡された medicines を使用する
+
+
+# forms.py
+class HospitalUpdateForm(HospitalRegistrationForm):
+    class Meta(HospitalRegistrationForm.Meta):
+        exclude = ['hospital_id']  # hospital_id を除外

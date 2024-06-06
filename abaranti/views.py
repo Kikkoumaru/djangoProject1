@@ -9,6 +9,7 @@ from django.db.models import Q
 from datetime import date
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
 
 
 # -------------------------------------------------------------------
@@ -31,6 +32,7 @@ def login_view(request):
                     return redirect('menu_doctor')
             else:
                 messages.error(request, 'ユーザーIDまたはパスワードが正しくありません。')
+                return redirect('error')  # エラー画面にリダイレクト
     else:
         form = LoginForm()
 
@@ -45,12 +47,12 @@ def error_view(request):
 # メニュー画面
 @login_required
 def menu(request):
-    if request.user.role == Employee.Role.RECEPTION:
+    if request.user.role == Employee.Role.RECEPTION:  # roleに修正
         return redirect('menu_reception')  # 受付用メニュー
-    elif request.user.role == Employee.Role.DOCTOR:
+    elif request.user.role == Employee.Role.DOCTOR:  # roleに修正
         return redirect('menu_doctor')  # 医師用メニュー
     else:
-        return redirect('error')  # エラー画面のURLパターン名に置き換えてください
+        return redirect('error')
 
 
 # -------------------------------------------------------------------
