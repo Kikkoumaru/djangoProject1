@@ -9,7 +9,9 @@ class LoginForm(forms.Form):
 
 # 従業員登録フォーム (E101)
 class EmployeeRegistrationForm(forms.ModelForm):
+    user_id = forms.CharField(label='ユーザーID', max_length=8, required=True)
     confirm_password = forms.CharField(widget=forms.PasswordInput, label='パスワード（確認用）')
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput, required=True)
 
     class Meta:
         model = Employee
@@ -20,9 +22,6 @@ class EmployeeRegistrationForm(forms.ModelForm):
             'last_name': '姓',
             'password': 'パスワード',
             'role': 'ロール',
-        }
-        widgets = {
-            'password': forms.PasswordInput(),
         }
 
     def clean(self):
@@ -74,6 +73,7 @@ class HospitalUpdateForm(HospitalRegistrationForm):
 
 # 患者登録フォーム (P101)
 class PatientRegistrationForm(forms.ModelForm):
+    insurance_number = forms.CharField(label='保険証記号番号', max_length=64, required=True)
     confirm_insurance_number = forms.CharField(label='保険証記号番号（確認用）', max_length=64, required=True)
 
     class Meta:
@@ -101,6 +101,7 @@ class PatientRegistrationForm(forms.ModelForm):
 
 # 患者保険証変更フォーム (P102)
 class PatientInsuranceChangeForm(forms.ModelForm):
+    insurance_number = forms.CharField(label='保険証記号番号', max_length=64, required=True)
     confirm_insurance_number = forms.CharField(label='保険証記号番号（確認用）', max_length=64, required=True)
 
     class Meta:
@@ -136,8 +137,3 @@ class MedicationInstructionForm(forms.ModelForm):
         if medicines:
             self.fields['medicine'].queryset = medicines  # ビュー関数から渡された medicines を使用する
 
-
-# forms.py
-class HospitalUpdateForm(HospitalRegistrationForm):
-    class Meta(HospitalRegistrationForm.Meta):
-        exclude = ['hospital_id']  # hospital_id を除外

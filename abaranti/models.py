@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class Employee(AbstractUser):
     class Role(models.IntegerChoices):
         RECEPTION = 0, '受付'
@@ -19,6 +20,7 @@ class Employee(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Hospital(models.Model):
     hospital_id = models.CharField(max_length=8, primary_key=True)
     hospital_name = models.CharField(max_length=64)
@@ -30,6 +32,7 @@ class Hospital(models.Model):
     def __str__(self):
         return self.hospital_name
 
+
 class Supplier(models.Model):
     supplier_id = models.CharField(max_length=8, primary_key=True)
     supplier_name = models.CharField(max_length=64)
@@ -40,6 +43,7 @@ class Supplier(models.Model):
 
     def __str__(self):
         return self.supplier_name
+
 
 class Patient(models.Model):
     patient_id = models.CharField(max_length=8, primary_key=True)
@@ -53,6 +57,7 @@ class Patient(models.Model):
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
 
+
 class Medicine(models.Model):
     medicineid = models.CharField(max_length=8, primary_key=True)
     medicinename = models.CharField(max_length=64)
@@ -60,6 +65,7 @@ class Medicine(models.Model):
 
     def __str__(self):
         return self.medicinename
+
 
 class Treatment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
