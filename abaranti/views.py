@@ -226,7 +226,7 @@ def hospital_update_confirm(request, hospital_id):
             hospital.phone_number = form_data['phone_number']
             hospital.capital = form_data['capital']
             hospital.emergency = form_data['emergency']
-            hospital.save()  # 変更を保存
+            hospital.save() # 変更を保存
             del request.session['form_data']  # セッションデータの削除
             messages.success(request, '病院情報を変更しました。')
             return redirect('hospital_list')  # 一覧画面に戻る
